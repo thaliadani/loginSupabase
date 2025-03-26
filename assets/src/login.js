@@ -17,7 +17,7 @@ async function login() {
         document.getElementById("mensagem").innerText = "Login realizado com sucesso!";
         localStorage.setItem("usuarioNome", nome);
         setTimeout(() => {
-            window.location.href = "bem-vindo.html";
+            window.location.href = "lista-tarefa.html";
         }, 2000);
     }
 }

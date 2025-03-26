@@ -1,4 +1,4 @@
 function logout() {
     localStorage.removeItem("usuarioNome");
-    window.location.href = "cadastro.html";
+    window.location.href = "index.html";
 }

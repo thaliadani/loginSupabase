@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de tarefas</title>
+    <link rel="stylesheet" href="./assets/styles/main.css">
+</head>
+<body>
+    <main>
+
+        <h2 id="mensagem">Carregando...</h2>
+
+        <section>
+            <div>
+                <h1>Lista de tarefas</h1>
+                <form id="formulario">
+                <input type="text" name="tarefa" id="tarefa" placeholder="Adicione uma tarefa">
+                <button type="submit" id="adicionar">+</button>
+            </form>
+    
+    
+            <div class="tarefas">
+                <ul id="lista">
+                </ul>
+            </div>
+            </div>
+            
+            <button onclick="logout()">Sair</button>
+        </section>
+
+    </main>
+
+    <script src="./assets/src/bem-vindo.js"></script>
+    <script src="./assets/src/lista-de-tarefas.js"></script>
+    <script src="./assets/src/logout.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./assets/styles/main.css">
+    <link rel="stylesheet" href="./assets/styles/cadastro.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <main>
+        <section>
+            <h2>Login</h2>
+            <form class="formulario-cadastro-login" onsubmit="return false;">
+                <input type="text" id="nome" placeholder="Digite seu nome" required>
+                <input type="email" id="email" placeholder="Digite seu email" required>
+                <input type="password" id="senha" placeholder="Digite sua senha" required>
+                <div class="botoes">
+                    <button type="button" onclick="login()">Entrar</button>
+                    <button type="button" onclick="cadastrar()">Cadastrar</button>
+                </div>
+
+            </form>
+            <p id="mensagem"></p>
+        </section>
+    </main>
+
+    <script src="./assets/src/config-supabase.js"></script>
+    <script src="./assets/src/cadastro.js"></script>
+    <script src="./assets/src/login.js"></script>
+
+</body>
+
+</html>
