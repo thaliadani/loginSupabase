@@ -32,3 +32,24 @@
     gap: 1rem;
     padding-top: 1rem;
 }
+
+.formulario-cadastro-login .botoes button{
+    color: #1f1f1f;
+    font-weight: bold;
+    border: none;
+    padding: .5rem .8rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: .2s all;
+}
+
+.formulario-cadastro-login .botoes button:hover{
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+}
+
+.formulario-cadastro-login .botoes button:active{
+    -webkit-box-shadow: inset -2px 1px 24px 10px rgba(0,0,0,0.46);
+    -moz-box-shadow: inset -2px 1px 24px 10px rgba(0,0,0,0.46);
+    box-shadow: inset -2px 1px 24px 10px rgba(0,0,0,0.46);
+}

@@ -34,11 +34,13 @@ section{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 380px;
     gap: .5rem;
     padding: 2rem;
     margin-top: 1.5rem;
     background: linear-gradient(135deg, rgb(78, 235, 138) 0%, rgba(41,184,229,1) 50%, rgb(78, 235, 138) 100%);
+    background-size: 400% 400%;
+    animation: gradient 12s ease infinite;
     border-radius: 1rem;
     -webkit-box-shadow: 10px 10px 12px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 12px 0px rgba(0,0,0,0.75);
@@ -49,23 +51,15 @@ section #mensagem{
     padding-top: .5rem;
 }
 
-section button{
-    color: #1f1f1f;
-    font-weight: bold;
-    border: none;
-    padding: .5rem .8rem;
-    border-radius: 1rem;
-    cursor: pointer;
-    transition: .2s all;
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
-section button:hover{
-    background-color: #1f1f1f;
-    color: #f0f0f0;
-}
-
-section button:active{
-    -webkit-box-shadow: inset -2px 1px 24px 10px rgba(0,0,0,0.46);
-    -moz-box-shadow: inset -2px 1px 24px 10px rgba(0,0,0,0.46);
-    box-shadow: inset -2px 1px 24px 10px rgba(0,0,0,0.46);
-}
