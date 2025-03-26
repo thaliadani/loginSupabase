@@ -21,22 +21,17 @@ section button{
     font-size: 1.4rem;
 }
 
-.tarefas input{
-    width: 1.2rem;
-    height: 1.2rem;
-    cursor: pointer;
-}
-
-input[type="checkbox"] {
+.tarefas input[type="checkbox"] {
     appearance: none;
     position: relative;
     width: 1.125rem;
     height: 1.125rem;
-    background-color: #fff;
+    background-color: #ffffff;
     border: 0.125rem solid #2b2b2b;
     border-radius: 0.25rem;
+    cursor: pointer;
 }
 
-input[type="checkbox"]:checked {
-    background-color: #04ac12;
+.tarefas input[type="checkbox"]:checked {
+    background-color: #2fa1ff;
 }
