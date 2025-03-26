@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo</title>
+</head>
+<body>
+
+    <h2 id="mensagem">Carregando...</h2>
+
+    <button onclick="logout()">Sair</button>
+
+    <script>
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
+
+        if (usuarioEmail) {
+            document.getElementById("mensagem").innerText = `Bem-vindo, ${usuarioEmail}!`;
+        } else {
+            document.getElementById("mensagem").innerText = "Usuário não autenticado!";
+        }
+
+        function logout() {
+            localStorage.removeItem("usuarioEmail");
+            window.location.href = "index.html";
+        }
+    </script>
+
+</body>
+</html>
