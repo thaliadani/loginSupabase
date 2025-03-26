@@ -1,72 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login com Supabase</title>
+    <link rel="stylesheet" href="./assets/styles/main.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
+    <main>
+        <section>
+            <h2>Login com Supabase</h2>
+            <form class="formulario-cadastro-login" onsubmit="return false;">
+                <input type="text" id="nome" placeholder="Digite seu nome" required>
+                <input type="email" id="email" placeholder="Digite seu email" required>
+                <input type="password" id="senha" placeholder="Digite sua senha" required>
+                <div class="botoes">
+                    <button type="button" onclick="login()">Entrar</button>
+                    <button type="button" onclick="cadastrar()">Cadastrar</button>
+                </div>
 
-    <h2>Login com Supabase</h2>
-    
-    <form onsubmit="return false;">
-        <input type="email" id="email" placeholder="Digite seu email" required>
-        <input type="password" id="senha" placeholder="Digite sua senha" required>
-        <button type="button" onclick="login()">Entrar</button>
-        <button type="button" onclick="cadastrar()">Cadastrar</button>
-    </form>
-    
-    <p id="mensagem"></p>
+            </form>
+            <p id="mensagem"></p>
+        </section>
+    </main>
 
-    <script>
-        const supabase = window.supabase.createClient(
-            "https://klutgrdxyempizbktuhp.supabase.co",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtsdXRncmR4eWVtcGl6Ymt0dWhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5OTA5ODgsImV4cCI6MjA1ODU2Njk4OH0.-n4yuz07BZdvUgyLQM8kHT2fn1FmLOwmyxn1Gaoa_Y8"
-        );
-
-        async function login() {
-            console.log("Tentando fazer login...");
-            const email = document.getElementById("email").value.trim();
-            const senha = document.getElementById("senha").value.trim();
-            
-            if (!email || !senha) {
-                document.getElementById("mensagem").innerText = "Preencha todos os campos!";
-                return;
-            }
-
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
-
-            if (error) {
-                document.getElementById("mensagem").innerText = "Erro: " + error.message;
-            } else {
-                document.getElementById("mensagem").innerText = "Login realizado com sucesso!";
-                localStorage.setItem("usuarioEmail", email);
-                setTimeout(() => {
-                    window.location.href = "bem-vindo.html";
-                }, 2000);
-            }
-        }
-
-        async function cadastrar() {
-            console.log("Tentando cadastrar...");
-            const email = document.getElementById("email").value.trim();
-            const senha = document.getElementById("senha").value.trim();
-
-            if (!email || !senha) {
-                document.getElementById("mensagem").innerText = "Preencha todos os campos!";
-                return;
-            }
-
-            const { data, error } = await supabase.auth.signUp({ email, password: senha });
-
-            if (error) {
-                document.getElementById("mensagem").innerText = "Erro: " + error.message;
-            } else {
-                document.getElementById("mensagem").innerText = "Cadastro realizado com sucesso!";
-            }
-        }
-    </script>
+    <script src="./assets/src/config-supabase.js"></script>
+    <script src="./assets/src/cadastro.js"></script>
+    <script src="./assets/src/login.js"></script>
 
 </body>
+
 </html>

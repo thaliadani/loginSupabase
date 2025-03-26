@@ -4,27 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bem-vindo</title>
+    <link rel="stylesheet" href="./assets/styles/main.css">
 </head>
 <body>
+    <main>
 
-    <h2 id="mensagem">Carregando...</h2>
+        <h2 id="mensagem">Carregando...</h2>
 
-    <button onclick="logout()">Sair</button>
+        <section>
+            <div>
+               <h1>Lista de tarefas</h1>
+            </div>
+            
+            <button onclick="logout()">Sair</button>
+        </section>
 
-    <script>
-        const usuarioEmail = localStorage.getItem("usuarioEmail");
+    </main>
 
-        if (usuarioEmail) {
-            document.getElementById("mensagem").innerText = `Bem-vindo, ${usuarioEmail}!`;
-        } else {
-            document.getElementById("mensagem").innerText = "Usuário não autenticado!";
-        }
-
-        function logout() {
-            localStorage.removeItem("usuarioEmail");
-            window.location.href = "cadastro.html";
-        }
-    </script>
-
+    <script src="./assets/src/bem-vindo.js"></script>
+    <script src="./assets/src/logout.js"></script>
 </body>
 </html>
