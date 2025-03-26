@@ -40,7 +40,8 @@ function renderizarTarefasNoHTML(tituloDaTarefa, feito = false) {
         var _a;
         if (evento.target) {
             const liRemover = evento.target.parentElement;
-            const tituloRemover = (_a = liRemover === null || liRemover === void 0 ? void 0 : liRemover.querySelector('span')) === null || _a === void 0 ? void 0 : _a.textContent;
+            const spanElement = liRemover === null || liRemover === void 0 ? void 0 : liRemover.querySelector('span');
+            const tituloRemover = spanElement === null || spanElement === void 0 ? void 0 : spanElement.textContent;
             tarefas = tarefas.filter(t => t.titulo !== tituloRemover);
             listaDeTarefas === null || listaDeTarefas === void 0 ? void 0 : listaDeTarefas.removeChild(liRemover);
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
