@@ -14,7 +14,6 @@ section button{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
     gap: 1rem;
     padding: .4rem;
     font-weight: bold;
@@ -34,7 +33,7 @@ section button{
 }
 
 .tarefas input[type="checkbox"]:checked {
-    background-color: #00eb00;
+    background-color: #01c986;
 }
 
 .tarefas button:nth-child(1){
