@@ -84,7 +84,7 @@ button{
     color: #1f1f1f;
     font-weight: bold;
     border: none;
-    padding: .5rem .8rem;
+    padding: .5rem;
     border-radius: 1rem;
     cursor: pointer;
     transition: .2s all;
@@ -121,6 +121,10 @@ button:active{
     justify-content: center;
     gap: 1rem;
     padding-top: 1rem;
+}
+
+.formulario-cadastro-login button{
+    padding: .5rem .8rem;
 }
 
 .formulario-cadastro-login input:nth-child(1){
