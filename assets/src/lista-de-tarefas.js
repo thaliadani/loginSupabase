@@ -92,15 +92,15 @@ function renderizarTarefasNoHTML(tarefa) {
         // Atualizar array de tarefas
         tarefas = tarefas.map(t => {
             if (t.titulo === tarefa.titulo) {
-                return {
-                    ...t,
-                    prioridade: opcao
-                };
-            }
+                return { ...t, prioridade: opcao };
+            };
             return t;
         });
         
+        tarefas.sort((a, b) => b.prioridade - a.prioridade);
         localStorage.setItem('tarefas', JSON.stringify(tarefas));
+        listaDeTarefas.innerHTML = '';
+        tarefas.forEach(t => renderizarTarefasNoHTML(t));
     });
 
     li.appendChild(prioridadeBtn);
@@ -114,9 +114,13 @@ window.onload = () => {
     const tarefasStorage = localStorage.getItem('tarefas');
     if (tarefasStorage) {
         tarefas = JSON.parse(tarefasStorage);
-        tarefas.forEach(t => {
-            renderizarTarefasNoHTML(t);
-        });
+        
+        // Ordena do maior (3) para o menor (1) ao carregar
+        tarefas.sort((a, b) => b.prioridade - a.prioridade);
+        
+        // Renderiza na ordem correta
+        listaDeTarefas.innerHTML = ''; // Limpa a lista antes de renderizar
+        tarefas.forEach(t => renderizarTarefasNoHTML(t));
     }
 };
 
