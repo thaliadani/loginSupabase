@@ -15,24 +15,27 @@ const formulario = document.querySelector('#formulario');
 const adicionarTarefa = document.querySelector('#adicionar');
 const listaDeTarefas = document.querySelector('#lista');
 let tarefas = [];
-function renderizarTarefasNoHTML(tituloDaTarefa, feito = false) {
+
+function renderizarTarefasNoHTML(tarefa) {
     const li = document.createElement('li');
     const input = document.createElement('input');
     input.setAttribute('type', 'checkbox');
+    
     input.addEventListener('change', (event) => {
         const liToToggle = event.target.parentElement;
-        const spanToToggle = liToToggle === null || liToToggle === void 0 ? void 0 : liToToggle.querySelector('span');
+        const spanToToggle = liToToggle?.querySelector('span');
         const done = event.target.checked;
+        
         if (done) {
             spanToToggle.style.textDecoration = 'line-through';
-        }
-        else {
+        } else {
             spanToToggle.style.textDecoration = 'none';
         }
+        
         tarefas = tarefas.map(t => {
-            if (t.titulo === (spanToToggle === null || spanToToggle === void 0 ? void 0 : spanToToggle.textContent)) {
+            if (t.titulo === tarefa.titulo) {
                 return {
-                    titulo: t.titulo,
+                    ...t,
                     feito: !t.feito
                 };
             }
@@ -40,72 +43,100 @@ function renderizarTarefasNoHTML(tituloDaTarefa, feito = false) {
         });
         localStorage.setItem('tarefas', JSON.stringify(tarefas));
     });
-    input.checked = feito;
+    
+    input.checked = tarefa.feito;
     const span = document.createElement('span');
-    span.textContent = tituloDaTarefa;
-    if (feito) {
+    span.textContent = tarefa.titulo;
+    
+    if (tarefa.feito) {
         span.style.textDecoration = 'line-through';
     }
+    
+    // Aplicar cor baseada na prioridade
+    if (tarefa.prioridade === "2") {
+        li.style.backgroundColor = "yellow";
+        li.style.color = "black";
+    } else if (tarefa.prioridade === "3") {
+        li.style.backgroundColor = "red";
+        li.style.color = "white";
+    } else {
+        li.style.backgroundColor = "transparent";
+        li.style.color = "black";
+    }
+
     const button = document.createElement('button');
     button.textContent = "-";
     button.addEventListener('click', (evento) => {
-        var _a;
-        if (evento.target) {
-            const liRemover = evento.target.parentElement;
-            const spanElement = liRemover === null || liRemover === void 0 ? void 0 : liRemover.querySelector('span');
-            const tituloRemover = spanElement === null || spanElement === void 0 ? void 0 : spanElement.textContent;
-            tarefas = tarefas.filter(t => t.titulo !== tituloRemover);
-            listaDeTarefas === null || listaDeTarefas === void 0 ? void 0 : listaDeTarefas.removeChild(liRemover);
-            localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        }
+        tarefas = tarefas.filter(t => t.titulo !== tarefa.titulo);
+        listaDeTarefas?.removeChild(li);
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
     });
 
-    const prioridade = document.createElement('button');
-    prioridade.textContent = "^";
-    prioridade.addEventListener('click', (evento) => {
-        opcao = prompt("Qual a prioridade da tarefa? 1-Nenhuma, 2-Pouco, 3-Muito");
-        if (opcao == "2") {
-            li.style.backgroundColor = "yellow"
-            li.style.color = "black"
-        } else if (opcao == "3") {
-            li.style.backgroundColor = "red"
-            li.style.color= "white"
+    const prioridadeBtn = document.createElement('button');
+    prioridadeBtn.textContent = "^";
+    prioridadeBtn.addEventListener('click', (evento) => {
+        const opcao = prompt("Qual a prioridade da tarefa? 1-Nenhuma, 2-Pouco, 3-Muito") || "1";
+        
+        // Atualizar visual
+        if (opcao === "2") {
+            li.style.backgroundColor = "yellow";
+            li.style.color = "black";
+        } else if (opcao === "3") {
+            li.style.backgroundColor = "red";
+            li.style.color = "white";
         } else {
-            li.style.backgroundColor = "transparent"
-            li.style.color = "black"
+            li.style.backgroundColor = "transparent";
+            li.style.color = "black";
         }
 
+        // Atualizar array de tarefas
+        tarefas = tarefas.map(t => {
+            if (t.titulo === tarefa.titulo) {
+                return {
+                    ...t,
+                    prioridade: opcao
+                };
+            }
+            return t;
+        });
+        
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
     });
 
-    li.appendChild(prioridade);
+    li.appendChild(prioridadeBtn);
     li.appendChild(input);
     li.appendChild(span);
     li.appendChild(button);
-    listaDeTarefas === null || listaDeTarefas === void 0 ? void 0 : listaDeTarefas.appendChild(li);
+    listaDeTarefas?.appendChild(li);
 }
+
 window.onload = () => {
     const tarefasStorage = localStorage.getItem('tarefas');
     if (tarefasStorage) {
         tarefas = JSON.parse(tarefasStorage);
         tarefas.forEach(t => {
-            renderizarTarefasNoHTML(t.titulo, t.feito);
+            renderizarTarefasNoHTML(t);
         });
     }
 };
-formulario === null || formulario === void 0 ? void 0 : formulario.addEventListener('submit', (evento) => {
-    evento.preventDefault(); // Evita o comportamento padrão do formulário, que seria recarregar a página.
+
+formulario?.addEventListener('submit', (evento) => {
+    evento.preventDefault();
     const tituloDaTarefa = document.querySelector('#tarefa').value;
+    
     if (tituloDaTarefa.length <= 3) {
         alert('A tarefa precisa ter no mínimo 3 caracteres.');
         return;
     }
 
-    //Adicionando a tarefa no array de tarefas
-    tarefas.push({
+    const novaTarefa = {
         titulo: tituloDaTarefa,
-        feito: false
-    });
+        feito: false,
+        prioridade: "1" // Prioridade padrão
+    };
+    
+    tarefas.push(novaTarefa);
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
-    renderizarTarefasNoHTML(tituloDaTarefa);
+    renderizarTarefasNoHTML(novaTarefa);
     document.querySelector('#tarefa').value = '';
 });
