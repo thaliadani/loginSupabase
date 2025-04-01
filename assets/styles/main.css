@@ -73,18 +73,6 @@ input{
     background-position: 4%;
 }
 
-input:nth-child(1){
-    background-image: url("../icons/usuario-icon.png");
-}
-
-input:nth-child(2){
-    background-image: url("../icons/email-icon.png");
-}
-
-input:nth-child(3){
-    background-image: url("../icons/senha-icon.png");
-}
-
 input:focus{
     outline-color: #21ec3c;
     outline-offset: -.2rem;
@@ -133,4 +121,16 @@ button:active{
     justify-content: center;
     gap: 1rem;
     padding-top: 1rem;
+}
+
+.formulario-cadastro-login input:nth-child(1){
+    background-image: url("../icons/usuario-icon.png");
+}
+
+.formulario-cadastro-login input:nth-child(2){
+    background-image: url("../icons/email-icon.png");
+}
+
+.formulario-cadastro-login input:nth-child(3){
+    background-image: url("../icons/senha-icon.png");
 }
