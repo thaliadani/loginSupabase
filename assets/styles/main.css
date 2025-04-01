@@ -65,7 +65,7 @@ section #mensagem{
 
 input{
     border: none;
-    padding: .4rem 2.2rem;
+    padding: .4rem;
     border-radius: 1rem;
     cursor:text;
     background-size: 20px;
@@ -84,7 +84,7 @@ button{
     color: #1f1f1f;
     font-weight: bold;
     border: none;
-    padding: .5rem;
+    padding: .5rem .8rem;
     border-radius: 1rem;
     cursor: pointer;
     transition: .2s all;
@@ -123,8 +123,8 @@ button:active{
     padding-top: 1rem;
 }
 
-.formulario-cadastro-login button{
-    padding: .5rem .8rem;
+.formulario-cadastro-login input{
+    padding: .4rem 2.2rem;
 }
 
 .formulario-cadastro-login input:nth-child(1){
