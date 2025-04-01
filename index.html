@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Lista de Tarefas - Login</title>
+    <link rel="shortcut icon" href="./assets/icons/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./assets/styles/main.css">
-    <link rel="stylesheet" href="./assets/styles/cadastro.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
@@ -15,7 +15,7 @@
         <section>
             <h2>Login</h2>
             <form class="formulario-cadastro-login" onsubmit="return false;">
-                <input type="text" id="nome" placeholder="Digite seu nome" required>
+                <input type="text" id="nome" placeholder="Digite seu nome" maxlength="14" required >
                 <input type="email" id="email" placeholder="Digite seu email" required>
                 <input type="password" id="senha" placeholder="Digite sua senha" required>
                 <div class="botoes">

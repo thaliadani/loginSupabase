@@ -1,3 +1,15 @@
+// Mensagem de bem vindo
+
+const usuarioNome = localStorage.getItem("usuarioNome");
+
+if (usuarioNome) {
+    document.getElementById("mensagem").innerText = `Bem-vindo(a), ${usuarioNome}!`;
+} else {
+    document.getElementById("mensagem").innerText = "Usuário não autenticado!";
+}
+
+// Lista de Tarefas
+
 "use strict";
 const formulario = document.querySelector('#formulario');
 const adicionarTarefa = document.querySelector('#adicionar');
@@ -47,6 +59,25 @@ function renderizarTarefasNoHTML(tituloDaTarefa, feito = false) {
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
         }
     });
+
+    const prioridade = document.createElement('button');
+    prioridade.textContent = "^";
+    prioridade.addEventListener('click', (evento) => {
+        opcao = prompt("Qual a prioridade da tarefa? 1-Nenhuma, 2-Pouco, 3-Muito");
+        if (opcao == "2") {
+            li.style.backgroundColor = "yellow"
+            li.style.color = "black"
+        } else if (opcao == "3") {
+            li.style.backgroundColor = "red"
+            li.style.color= "white"
+        } else {
+            li.style.backgroundColor = "transparent"
+            li.style.color = "black"
+        }
+
+    });
+
+    li.appendChild(prioridade);
     li.appendChild(input);
     li.appendChild(span);
     li.appendChild(button);
@@ -64,10 +95,11 @@ window.onload = () => {
 formulario === null || formulario === void 0 ? void 0 : formulario.addEventListener('submit', (evento) => {
     evento.preventDefault(); // Evita o comportamento padrão do formulário, que seria recarregar a página.
     const tituloDaTarefa = document.querySelector('#tarefa').value;
-    if (tituloDaTarefa.length < 3) {
+    if (tituloDaTarefa.length <= 3) {
         alert('A tarefa precisa ter no mínimo 3 caracteres.');
         return;
     }
+
     //Adicionando a tarefa no array de tarefas
     tarefas.push({
         titulo: tituloDaTarefa,
