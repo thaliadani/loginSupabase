@@ -21,8 +21,8 @@ function renderizarTarefasNoHTML(tarefa) {
     container.className = 'tarefa-container';
     container.style.display = 'flex';
     container.style.alignItems = 'center';
-    container.style.margin= '1.2rem 0';
-    container.style.gap = '1rem';
+    container.style.margin= '.7rem 0';
+    container.style.gap = '.7rem';
 
     // Botão de prioridade (fora da caixa colorida)
     const prioridadeBtn = document.createElement('button');
@@ -36,27 +36,27 @@ function renderizarTarefasNoHTML(tarefa) {
     tarefaBox.style.alignItems = 'center';
     tarefaBox.style.flexGrow = '1';
     tarefaBox.style.padding = '.8rem .5rem';
-    tarefaBox.style.borderRadius = '4px';
+    tarefaBox.style.borderRadius = '.4rem';
     tarefaBox.style.width = '200px';
     tarefaBox.style.transition = 'all 0.3s ease';
 
     // Aplicar cor baseada na prioridade
     if (tarefa.prioridade === "2") {
         tarefaBox.style.backgroundColor = "#fff3bf";
-        tarefaBox.style.borderLeft = "4px solid #ffd43b";
+        tarefaBox.style.borderLeft = ".3rem solid #ffd43b";
     } else if (tarefa.prioridade === "3") {
         tarefaBox.style.backgroundColor = "#ffdddd";
-        tarefaBox.style.borderLeft = "4px solid #ff6b6b";
+        tarefaBox.style.borderLeft = ".3rem solid #ff6b6b";
     } else {
         tarefaBox.style.backgroundColor = "#f8f9fa";
-        tarefaBox.style.borderLeft = "4px solid #ced4da";
+        tarefaBox.style.borderLeft = ".3rem solid #ced4da";
     }
 
     // Checkbox
     const input = document.createElement('input');
     input.setAttribute('type', 'checkbox');
     input.className = 'tarefa-checkbox';
-    input.style.marginRight = '10px';
+    input.style.marginRight = '.5rem';
     input.style.cursor = 'pointer';
     
     input.addEventListener('change', (event) => {
@@ -87,7 +87,6 @@ function renderizarTarefasNoHTML(tarefa) {
     span.className = 'tarefa-texto';
     span.textContent = tarefa.titulo;
     span.style.flexGrow = '1';
-    span.style.marginRight = '10px';
     
     if (tarefa.feito) {
         span.style.textDecoration = 'line-through';
