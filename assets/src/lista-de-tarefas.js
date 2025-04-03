@@ -62,7 +62,7 @@ function renderizarTarefasNoHTML(tarefa) {
     input.style.marginRight = '.5rem';
     input.style.cursor = 'pointer';
     
-    input.addEventListener('change', (event) => {
+    input.addEventListener('change', async (event) => {
         const spanToToggle = event.target.nextElementSibling;
         const done = event.target.checked;
         
@@ -75,12 +75,23 @@ function renderizarTarefasNoHTML(tarefa) {
         }
         
         tarefas = tarefas.map(t => {
-            if (t.titulo === tarefa.titulo) {
+            if (t.id === tarefa.id) {
                 return { ...t, feito: !t.feito };
             }
             return t;
         });
         localStorage.setItem('tarefas', JSON.stringify(tarefas));
+
+        try {
+            const { error } = await supabase
+                .from('tarefas')
+                .update({ feito: !tarefa.feito })
+                .eq('id', tarefa.id)
+            
+            if (error) throw error;
+        }catch (err) {
+            console.error('Erro ao atualizar tarefa:', err);
+        }
     });
     
     input.checked = tarefa.feito;
@@ -106,25 +117,73 @@ function renderizarTarefasNoHTML(tarefa) {
         localStorage.setItem('tarefas', JSON.stringify(tarefas));
     });
 
-    // Evento do botão de prioridade
-    prioridadeBtn.addEventListener('click', () => {
-        const opcao = prompt("Defina a prioridade:\n1 - Normal\n2 - Importante\n3 - Urgente", tarefa.prioridade) || "1";
+    removerBtn.addEventListener('click', async () => {
+        const tarefaId = tarefa.id;
         
-        // Atualizar array de tarefas
-        tarefas = tarefas.map(t => {
-            if (t.titulo === tarefa.titulo) {
-                return { ...t, prioridade: opcao };
-            }
-            return t;
-        });
-        
-        // Reordenar e atualizar
-        tarefas.sort((a, b) => b.prioridade - a.prioridade);
-        localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        listaDeTarefas.innerHTML = '';
-        tarefas.forEach(t => renderizarTarefasNoHTML(t));
+        try {
+            // Remove do Supabase
+            const { error } = await supabase
+                .from('tarefas')
+                .delete()
+                .eq('id', tarefaId);
+            
+            if (error) throw error;
+            
+            // Remove localmente
+            tarefas = tarefas.filter(t => t.id !== tarefaId);
+            listaDeTarefas?.removeChild(container);
+            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+        } catch (err) {
+            console.error('Erro ao remover do Supabase:', err);
+            // Fallback para localStorage
+            tarefas = tarefas.filter(t => t.id !== tarefaId);
+            listaDeTarefas?.removeChild(container);
+            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+        }
     });
 
+    // Evento do botão de prioridade
+    prioridadeBtn.addEventListener('click', async () => {
+        const opcao = prompt("Defina a prioridade:\n1 - Normal\n2 - Importante\n3 - Urgente", tarefa.prioridade) || "1";
+        
+        try {
+            // Atualiza no Supabase
+            const { error } = await supabase
+                .from('tarefas')
+                .update({ prioridade: opcao })
+                .eq('id', tarefa.id);
+            
+            if (error) throw error;
+            
+            // Atualiza localmente
+            tarefas = tarefas.map(t => {
+                if (t.id === tarefa.id) {
+                    return { ...t, prioridade: opcao };
+                }
+                return t;
+            });
+            
+            tarefas.sort((a, b) => b.prioridade - a.prioridade);
+            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+            listaDeTarefas.innerHTML = '';
+            tarefas.forEach(t => renderizarTarefasNoHTML(t));
+        } catch (err) {
+            console.error('Erro ao atualizar prioridade no Supabase:', err);
+            // Fallback para localStorage
+            tarefas = tarefas.map(t => {
+                if (t.id === tarefa.id) {
+                    return { ...t, prioridade: opcao };
+                }
+                return t;
+            });
+            
+            tarefas.sort((a, b) => b.prioridade - a.prioridade);
+            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+            listaDeTarefas.innerHTML = '';
+            tarefas.forEach(t => renderizarTarefasNoHTML(t));
+        }
+    });
+    
     // Montagem da estrutura
     container.appendChild(prioridadeBtn);
     tarefaBox.appendChild(input);
@@ -135,7 +194,25 @@ function renderizarTarefasNoHTML(tarefa) {
     listaDeTarefas?.appendChild(container);
 }
 
-window.onload = () => {
+window.onload = async () => {
+    try{
+        const{data, error}= await supabase
+        .from('tarefas')
+        .select('*')
+        .order('prioridade', { ascending: false });
+
+        if (error) throw error;
+
+        if(data && data.length > 0){
+            tarefas = data;
+            listaDeTarefas.innerHTML = '';
+            tarefas.forEach(t => renderizarTarefasNoHTML(t));
+            return;
+        }
+    }catch(err){
+        console.error('Erro ao buscar tarefas:', err);
+    }
+
     const tarefasStorage = localStorage.getItem('tarefas');
     if (tarefasStorage) {
         tarefas = JSON.parse(tarefasStorage);
@@ -149,7 +226,7 @@ window.onload = () => {
     }
 };
 
-formulario?.addEventListener('submit', (evento) => {
+formulario?.addEventListener('submit', async (evento) => {
     evento.preventDefault();
     const inputTarefa = document.querySelector('#tarefa');
     const tituloDaTarefa = inputTarefa.value.trim();
@@ -164,10 +241,27 @@ formulario?.addEventListener('submit', (evento) => {
         feito: false,
         prioridade: "1" // Prioridade padrão
     };
+
+    try{
+        const { data, error } = await supabase
+        .from('tarefas')
+        .insert([novaTarefa])
+        .select();
+        
+        if (error) throw error;
     
-    tarefas.push(novaTarefa);
+    tarefas.push(data[0]);
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
-    renderizarTarefasNoHTML(novaTarefa);
+    renderizarTarefasNoHTML(data[0]);
     inputTarefa.value = '';
     inputTarefa.focus();
+    
+    }catch(err){
+        console.error('Erro ao adicionar tarefa:', err);
+        tarefas.push(novaTarefa);
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
+        renderizarTarefasNoHTML(novaTarefa);
+        inputTarefa.value = '';
+        inputTarefa.focus();
+    }
 });
