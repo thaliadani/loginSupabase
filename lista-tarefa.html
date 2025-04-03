@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lista de Tarefas</title>
-    <link rel="shortcut icon" href="./assets/icons/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="./assets/styles/main.css">
-    <link rel="stylesheet" href="./assets/styles/lista-tarefa.css">
+    <link
+      rel="shortcut icon"
+      href="./assets/icons/favicon.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./assets/styles/main.css" />
+    <link rel="stylesheet" href="./assets/styles/lista-tarefa.css" />
+    <link rel="stylesheet" href="./assets/styles/media-query.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
+  </head>
+  <body id="modo-claro modo-escuro">
+    <header class="cabecalho">
+      <h1 id="mensagem">Carregando...</h1>
+
+      <span id="hora"></span>
+      
+      <div class="modos-claro-escuro">
+        <button type="button" title="Modos claro e escuro" id="theme-toggle"></button>
+      </div>
+
+      <section class="pomodoro">
+        <span>Pomodoro</span>
+        <div class="pomodoro-tempo">
+          <span id="pomodoro-minutos">25</span>
+          <span>:</span>
+          <span id="pomodoro-segundos">00</span>
+        </div>
+        <div class="pomodoro-botoes">
+          <button id="iniciar" onclick="iniciarPomodoro()">Iniciar</button>
+          <button id="parar" onclick="pararPomodoro()" disabled>Parar</button>
+          <button id="reiniciar" onclick="reiniciarPomodoro()" disabled>
+            Reiniciar
+          </button>
+        </div>
+      </section>
+
+      
+    </header>
     <main>
+      <section class="container-tarefas">
+        <h2>Lista de Tarefas</h2>
 
-        <h2 id="mensagem">Carregando...</h2>
+        <form id="formulario">
+          <input
+            type="text"
+            name="tarefa"
+            id="tarefa"
+            placeholder="Adicione uma tarefa"
+            maxlength="14"
+          />
+          <button type="submit" id="adicionar">+</button>
+        </form>
 
-        <section>
-            <h1>Lista de tarefas</h1>
-            
-            <form id="formulario">
-            <input type="text" name="tarefa" id="tarefa" placeholder="Adicione uma tarefa" maxlength="14">
-            <button type="submit" id="adicionar">+</button>
-            </form>
-    
-            <div class="tarefas">
-                <ul id="lista">
-                </ul>
-            </div>
-            
-            <button onclick="logout()">Sair</button>
-        </section>
+        <div class="tarefas">
+          <ul id="lista"></ul>
+        </div>
 
+        <button onclick="logout()">Sair</button>
+      </section>
     </main>
 
+    <script src="./assets/src/modo-claro-escuro.js"></script>
     <script src="./assets/src/config-supabase.js"></script>
+    <script src="./assets/src/hora-atual.js"></script>
+    <script src="./assets/src/pomodoro.js"></script>
     <script src="./assets/src/lista-de-tarefas.js"></script>
     <script src="./assets/src/logout.js"></script>
-</body>
+  </body>
 </html>

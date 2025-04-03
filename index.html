@@ -7,12 +7,18 @@
     <title>Lista de Tarefas - Login</title>
     <link rel="shortcut icon" href="./assets/icons/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="./assets/styles/main.css">
+    <link rel="stylesheet" href="./assets/styles/media-query.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
     <main>
-        <section>
+
+        <div class="modos-claro-escuro">
+            <button type="button" title="Modos claro e escuro" id="theme-toggle"></button>
+        </div>
+        
+        <section class="container-login">
             <h2>Login</h2>
             <form class="formulario-cadastro-login" onsubmit="return false;">
                 <input type="text" id="nome" placeholder="Digite seu nome" maxlength="14" required >
@@ -28,6 +34,7 @@
         </section>
     </main>
 
+    <script src="./assets/src/modo-claro-escuro.js"></script>
     <script src="./assets/src/config-supabase.js"></script>
     <script src="./assets/src/cadastro.js"></script>
     <script src="./assets/src/login.js"></script>
