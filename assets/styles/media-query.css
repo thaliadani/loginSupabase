@@ -4,20 +4,9 @@
     .cabecalho h1{
         font-size: 1.8rem;
     }
-    .cabecalho .modos-claro-escuro{
-        position: relative;
-        top: -6rem;
-        left: 12rem;
-    }
-    .cabecalho .pomodoro{
-        width: 100%;
-    }
-    input{
-        width: 81%;
-        font-size: 1rem;
-    }
 
     .container-login{
-        width: 60%;
+        width: 80%;
+        margin-top: 2rem;
     }
 }

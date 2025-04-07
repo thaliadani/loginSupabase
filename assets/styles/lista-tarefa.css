@@ -24,6 +24,7 @@
     gap: .5rem;
     padding: 1rem;
     border-radius: 1rem;
+    width: 100%;
 }
 
 .cabecalho .pomodoro span{
@@ -41,7 +42,6 @@
 .cabecalho .pomodoro-botoes i{
     width: 30px;
 }
-
 
 .container-tarefas{
     display: flex;

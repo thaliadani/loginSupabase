@@ -42,13 +42,12 @@ body{
 
 .modos-claro-escuro{
     display: flex;
-    flex-direction: column;
     gap: .4rem;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 1rem;
-    right: 2rem;
+    position: relative;
+    top: 0;
+    right: 0;
 }
 
 .modos-claro-escuro button{
@@ -115,6 +114,7 @@ input{
     background-repeat: no-repeat;
     background-position: 4%;
     font-size: 1.1rem;
+    width: 100%;
 }
 
 input:focus{
