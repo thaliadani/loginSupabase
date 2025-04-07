@@ -11,7 +11,10 @@
     />
     <link rel="stylesheet" href="./assets/styles/main.css" />
     <link rel="stylesheet" href="./assets/styles/lista-tarefa.css" />
-    <script src="https://kit.fontawesome.com/ddf9f3190c.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/ddf9f3190c.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body id="modo-claro modo-escuro">
@@ -19,10 +22,14 @@
       <h1 id="mensagem">Carregando...</h1>
 
       <span id="hora"></span>
-      
+
       <div class="modos-claro-escuro">
-        <button type="button" title="Modos claro e escuro" id="theme-toggle"><i class="fa-solid fa-sun"></i></button>
-        <button title="sair" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <button type="button" title="Modos claro e escuro" id="theme-toggle">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+        <button title="sair" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
       </div>
 
       <section class="pomodoro">
@@ -33,15 +40,22 @@
           <span id="pomodoro-segundos">00</span>
         </div>
         <div class="pomodoro-botoes">
-          <button title="iniciar" id="iniciar" onclick="iniciarPomodoro()"><i class="fa-solid fa-play"></i></button>
-          <button title="parar" id="parar" onclick="pararPomodoro()" disabled><i class="fa-solid fa-stop"></i></button>
-          <button title="reiniciar" id="reiniciar" onclick="reiniciarPomodoro()" disabled>
+          <button title="iniciar" id="iniciar" onclick="iniciarPomodoro()">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <button title="parar" id="parar" onclick="pararPomodoro()" disabled>
+            <i class="fa-solid fa-stop"></i>
+          </button>
+          <button
+            title="reiniciar"
+            id="reiniciar"
+            onclick="reiniciarPomodoro()"
+            disabled
+          >
             <i class="fa-solid fa-rotate-right"></i>
           </button>
         </div>
       </section>
-
-      
     </header>
     <main>
       <section class="container-tarefas">
