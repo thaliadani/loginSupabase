@@ -23,6 +23,7 @@
       
       <div class="modos-claro-escuro">
         <button type="button" title="Modos claro e escuro" id="theme-toggle"><i class="fa-solid fa-sun"></i></button>
+        <button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
       </div>
 
       <section class="pomodoro">
@@ -33,10 +34,10 @@
           <span id="pomodoro-segundos">00</span>
         </div>
         <div class="pomodoro-botoes">
-          <button id="iniciar" onclick="iniciarPomodoro()">Iniciar</button>
-          <button id="parar" onclick="pararPomodoro()" disabled>Parar</button>
+          <button id="iniciar" onclick="iniciarPomodoro()"><i class="fa-solid fa-play"></i></button>
+          <button id="parar" onclick="pararPomodoro()" disabled><i class="fa-solid fa-stop"></i></button>
           <button id="reiniciar" onclick="reiniciarPomodoro()" disabled>
-            Reiniciar
+            <i class="fa-solid fa-rotate-right"></i>
           </button>
         </div>
       </section>
@@ -61,8 +62,6 @@
         <div class="tarefas">
           <ul id="lista"></ul>
         </div>
-
-        <button onclick="logout()">Sair</button>
       </section>
     </main>
 

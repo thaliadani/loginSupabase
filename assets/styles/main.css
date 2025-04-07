@@ -41,6 +41,11 @@ body{
 }
 
 .modos-claro-escuro{
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 1rem;
     right: 2rem;
@@ -165,18 +170,19 @@ button:active{
 
 .formulario-cadastro-login input{
     padding: .4rem 2.2rem;
+    background-size: 20px;
 }
 
 .formulario-cadastro-login input:nth-child(1){
-    background-image: url("../icons/usuario-icon.png");
+    background-image: url("../icons/user.svg");
 }
 
 .formulario-cadastro-login input:nth-child(2){
-    background-image: url("../icons/email-icon.png");
+    background-image: url("../icons/email.svg");
 }
 
 .formulario-cadastro-login input:nth-child(3){
-    background-image: url("../icons/senha-icon.png");
+    background-image: url("../icons/lock.svg");
 }
 
 

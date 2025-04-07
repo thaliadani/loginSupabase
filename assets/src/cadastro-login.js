@@ -1,15 +1,19 @@
 async function cadastrar() {
-  const nome = document.getElementById("nome").value.trim();
+  const usuario = document.getElementById("nome").value.trim();
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
 
-  if (!nome || !email || !senha) {
+  if (!usuario || !email || !senha) {
     document.getElementById("mensagem").innerText = "Preencha todos os campos!";
     return;
   }
 
-  const { data , error } = await supabase.auth.signUp({
-    usuario,
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase.auth.signUp({
+    user: usuario,
     email,
     password: senha,
   });
@@ -20,7 +24,6 @@ async function cadastrar() {
     document.getElementById("mensagem").innerText =
       "Cadastro realizado com sucesso!";
   }
-
 }
 
 async function login() {
@@ -33,8 +36,12 @@ async function login() {
     return;
   }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const { data, error } = await supabase.auth.signInWithPassword({
-    usuario,
+    user: usuario,
     email,
     password: senha,
   });

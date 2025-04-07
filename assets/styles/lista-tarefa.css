@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    gap: .8rem;
     max-width: 80%;
     height: 100%;
 }
@@ -31,6 +30,18 @@
     font-size: 2rem;
     font-weight: bold;
 }
+
+.cabecalho .pomodoro-botoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+}
+
+.cabecalho .pomodoro-botoes i{
+    width: 30px;
+}
+
 
 .container-tarefas{
     display: flex;
