@@ -63,16 +63,33 @@ async function cadastrar() {
 }
 
 async function login() {
-  const email = document.getElementById("email").value.trim();
-  const senha = document.getElementById("senha").value.trim();
+  const username = document.getElementById("nome").value.trim(); // Campo do nome de usuário
+  const email = document.getElementById("email").value.trim();   // Campo do email
+  const senha = document.getElementById("senha").value.trim();  // Campo da senha
 
-  if (!email || !senha) {
+  if (!username || !email || !senha) {
     document.getElementById("mensagem").innerText = "Preencha todos os campos!";
     return;
   }
 
   try {
-    // Faz login no sistema de autenticação
+    // 1. Verifica se o nome de usuário existe no banco de dados
+    const { data: userData, error: userError } = await supabase
+      .from('usuarios')
+      .select('username, email')
+      .eq('username', username)
+      .single(); // Retorna apenas um registro
+
+    if (userError || !userData) {
+      throw new Error('Nome de usuário não encontrado!');
+    }
+
+    // 2. Verifica se o email corresponde ao usuário
+    if (userData.email !== email) {
+      throw new Error('Email incorreto para este usuário!');
+    }
+
+    // 3. Tenta fazer login com Supabase Auth
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password: senha,
@@ -80,21 +97,14 @@ async function login() {
 
     if (error) throw error;
 
-    // Obtém o nome do usuário
-    const { data: userData, error: userError } = await supabase
-      .from('usuarios')
-      .select('username')
-      .eq('email', email)
-      .single();
-
-    if (userError) throw userError;
-
+    // Login bem-sucedido
     document.getElementById("mensagem").innerText = "Login realizado com sucesso!";
-    localStorage.setItem("usuarioNome", userData.username);
+    localStorage.setItem("usuarioNome", username);
     
     setTimeout(() => {
       window.location.href = "lista-tarefa.html";
     }, 2000);
+
   } catch (error) {
     document.getElementById("mensagem").innerText = "Erro: " + error.message;
   }
