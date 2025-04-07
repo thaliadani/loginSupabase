@@ -43,11 +43,11 @@ function renderizarTarefasNoHTML(tarefa) {
   tarefaBox.style.transition = "all 0.3s ease";
 
   // Aplicar cor baseada na prioridade
-  if (tarefa.prioridade === "2") {
+  if (tarefa.prioridade == "2") {
     tarefaBox.style.backgroundColor = "#fff3bf";
     tarefaBox.style.color = "#333333";
     tarefaBox.style.borderLeft = ".3rem solid #ffd43b";
-  } else if (tarefa.prioridade === "3") {
+  } else if (tarefa.prioridade == "3") {
     tarefaBox.style.backgroundColor = "#ffdddd";
     tarefaBox.style.color = "#333333";
     tarefaBox.style.borderLeft = ".3rem solid #ff6b6b";
