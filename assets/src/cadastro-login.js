@@ -9,28 +9,26 @@ async function cadastrar() {
   }
 
   try {
-    // Primeiro verifica se o usuário ou email já existem
-    const { data: existingUsers, error: checkError } = await supabase
+    // Verifica se o usuário já existe
+    const { data: existingUser, error: checkError } = await supabase
       .from('usuarios')
       .select('username, email')
-      .or(`username.eq.${username},email.eq.${email}`);
+      .or(`username.eq.${username},email.eq.${email}`)
+      .maybeSingle();
 
     if (checkError) throw checkError;
     
-    if (existingUsers && existingUsers.length > 0) {
-      const usernameExists = existingUsers.some(u => u.username === username);
-      const emailExists = existingUsers.some(u => u.email === email);
-      
-      if (usernameExists && emailExists) {
+    if (existingUser) {
+      if (existingUser.username === username && existingUser.email === email) {
         throw new Error('Nome de usuário e email já cadastrados');
-      } else if (usernameExists) {
+      } else if (existingUser.username === username) {
         throw new Error('Nome de usuário já cadastrado');
       } else {
         throw new Error('Email já cadastrado');
       }
     }
 
-    // Cadastra no sistema de autenticação do Supabase
+    // Cadastra apenas no sistema de autenticação
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password: senha,
@@ -43,53 +41,22 @@ async function cadastrar() {
 
     if (authError) throw authError;
 
-    // Salva na tabela de usuários
-    const { error: dbError } = await supabase
-      .from('usuarios')
-      .insert([
-        {
-          username: username,
-          email: email,
-          password_hash: senha // Na prática, você deveria usar um hash seguro aqui
-        }
-      ]);
-
-    if (dbError) throw dbError;
-
-    document.getElementById("mensagem").innerText = "Cadastro realizado com sucesso!";
+    document.getElementById("mensagem").innerText = "Cadastro realizado com sucesso! Verifique seu email!";
   } catch (error) {
     document.getElementById("mensagem").innerText = "Erro: " + error.message;
   }
 }
 
 async function login() {
-  const username = document.getElementById("nome").value.trim(); // Campo do nome de usuário
-  const email = document.getElementById("email").value.trim();   // Campo do email
-  const senha = document.getElementById("senha").value.trim();  // Campo da senha
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value.trim();
 
-  if (!username || !email || !senha) {
+  if (!email || !senha) {
     document.getElementById("mensagem").innerText = "Preencha todos os campos!";
     return;
   }
 
   try {
-    // 1. Verifica se o nome de usuário existe no banco de dados
-    const { data: userData, error: userError } = await supabase
-      .from('usuarios')
-      .select('username, email')
-      .eq('username', username)
-      .single(); // Retorna apenas um registro
-
-    if (userError || !userData) {
-      throw new Error('Nome de usuário não encontrado!');
-    }
-
-    // 2. Verifica se o email corresponde ao usuário
-    if (userData.email !== email) {
-      throw new Error('Email incorreto para este usuário!');
-    }
-
-    // 3. Tenta fazer login com Supabase Auth
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password: senha,
@@ -97,7 +64,10 @@ async function login() {
 
     if (error) throw error;
 
-    // Login bem-sucedido
+    // Obtém o username do usuário logado
+    const { data: { user } } = await supabase.auth.getUser();
+    const username = user.user_metadata.username;
+
     document.getElementById("mensagem").innerText = "Login realizado com sucesso!";
     localStorage.setItem("usuarioNome", username);
     
