@@ -23,8 +23,10 @@ function renderizarTarefasNoHTML(tarefa) {
   container.className = "tarefa-container";
   container.style.display = "flex";
   container.style.alignItems = "center";
+  container.style.justifyContent = "center";
   container.style.margin = ".7rem 0";
-  container.style.gap = ".7rem";
+  container.style.gap = ".8rem";
+  container.style.width = "100%";
 
   // Botão de prioridade (fora da caixa colorida)
   const prioridadeBtn = document.createElement("button");
@@ -36,6 +38,7 @@ function renderizarTarefasNoHTML(tarefa) {
   tarefaBox.className = "tarefa-box";
   tarefaBox.style.display = "flex";
   tarefaBox.style.alignItems = "center";
+  container.style.justifyContent = "center";
   tarefaBox.style.flexGrow = "1";
   tarefaBox.style.padding = ".8rem .5rem";
   tarefaBox.style.borderRadius = ".4rem";
@@ -62,6 +65,9 @@ function renderizarTarefasNoHTML(tarefa) {
   input.setAttribute("type", "checkbox");
   input.className = "tarefa-checkbox";
   input.style.marginRight = ".5rem";
+  input.style.width = "20px";
+  input.style.height = "20px";
+  input.style.borderRadius = "50%";
   input.style.cursor = "pointer";
 
   input.addEventListener("change", async (event) => {
