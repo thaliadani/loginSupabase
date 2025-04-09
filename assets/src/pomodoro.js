@@ -1,5 +1,5 @@
 const tempoPomodoro = 1;
-const tempoPausa = 1;
+const tempoPausa = 5;
 let minutos = tempoPomodoro;
 let segundos = 0;
 let intervalo;
@@ -88,34 +88,21 @@ function iniciarPomodoro() {
                     clearInterval(intervalo);
                     intervalo = null;
                     
-                    // Exibir mensagem imediatamente
+                    // Exibir mensagem
                     if (emPausa) {
-                        mensagemPomodoro.innerText = "Pausa terminada! Hora de trabalhar!";
+                        mensagemPomodoro.innerText = "Pausa terminada! Volte a tarefa!";
                     } else {
-                        mensagemPomodoro.innerText = "Tempo do Pomodoro terminado! Iniciando pausa...";
+                        mensagemPomodoro.innerText = "Tempo do Pomodoro terminado! Descanse!";
                     }
                     
                     // Tocar o som de notificação
                     audioNotificacao.play().catch(e => {
                         console.error("Erro ao reproduzir som:", e);
-                        // Mostrar mensagem mesmo se o som falhar
                         mensagemPomodoro.style.display = 'block';
                     });
                     
-                    // Pequeno atraso para garantir que a mensagem seja exibida
-                    setTimeout(() => {
-                        if (emPausa) {
-                            // Mudar para modo Pomodoro e iniciar automaticamente
-                            selectPomodoroPausa.value = "pomodoro";
-                            alternarModo();
-                            iniciarPomodoro();
-                        } else {
-                            // Mudar para modo Pausa e iniciar automaticamente
-                            selectPomodoroPausa.value = "pausa";
-                            alternarModo();
-                            iniciarPomodoro();
-                        }
-                    }, 1000);
+                    // Habilita o botão iniciar para que o usuário possa escolher o que fazer
+                    document.getElementById('iniciar').disabled = false;
                     
                     return;
                 } else {
