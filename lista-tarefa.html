@@ -1,88 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lista de Tarefas</title>
-    <link
-      rel="shortcut icon"
-      href="./assets/icons/favicon.png"
-      type="image/x-icon"
-    />
-    <link rel="stylesheet" href="./assets/styles/main.css" />
-    <link rel="stylesheet" href="./assets/styles/lista-tarefa.css" />
-    <script
-      src="https://kit.fontawesome.com/ddf9f3190c.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  </head>
-  <body id="modo-claro modo-escuro">
-    <header class="cabecalho">
-      <h1 id="mensagem">Carregando...</h1>
 
-      <span id="hora"></span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Tarefas</title>
+  <link rel="shortcut icon" href="./assets/icons/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="./assets/styles/main.css" />
+  <link rel="stylesheet" href="./assets/styles/lista-tarefa.css" />
+  <link rel="stylesheet" href="./assets/styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://kit.fontawesome.com/ddf9f3190c.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
 
-      <div class="modos-claro-escuro">
-        <button type="button" title="Modos claro e escuro" id="theme-toggle">
-          <i class="fa-solid fa-sun"></i>
+<body id="modo-claro modo-escuro">
+  <header class="cabecalho">
+    <h1 id="mensagem">Carregando...</h1>
+
+    <span id="hora"></span>
+
+    <div class="modos-claro-escuro">
+      <button type="button" title="Modos claro e escuro" id="theme-toggle">
+        <i class="fa-solid fa-sun"></i>
+      </button>
+      <button title="sair" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </button>
+    </div>
+
+    <section class="pomodoro animate__animated animate__repeat-1 animate__slideInDown">
+      <div class="select">
+        <select name="pomodoro-pausa" id="pomodoro-pausa">
+          <option value="pomodoro">Pomodoro</option>
+          <option value="pausa">Pausa</option>
+        </select>
+      </div>
+
+      <div class="pomodoro-tempo">
+        <span id="pomodoro-minutos"></span>
+        <span>:</span>
+        <span id="pomodoro-segundos"></span>
+      </div>
+      <div class="pomodoro-botoes">
+        <button title="iniciar" id="iniciar" onclick="iniciarPomodoro()">
+          <i class="fa-solid fa-play"></i>
         </button>
-        <button title="sair" onclick="logout()">
-          <i class="fa-solid fa-right-from-bracket"></i>
+        <button title="parar" id="parar" onclick="pararPomodoro()" disabled>
+          <i class="fa-solid fa-stop"></i>
+        </button>
+        <button title="reiniciar" id="reiniciar" onclick="reiniciarPomodoro()" disabled>
+          <i class="fa-solid fa-rotate-right"></i>
         </button>
       </div>
 
-      <section class="pomodoro">
-        <span>Pomodoro</span>
-        <div class="pomodoro-tempo">
-          <span id="pomodoro-minutos">25</span>
-          <span>:</span>
-          <span id="pomodoro-segundos">00</span>
-        </div>
-        <div class="pomodoro-botoes">
-          <button title="iniciar" id="iniciar" onclick="iniciarPomodoro()">
-            <i class="fa-solid fa-play"></i>
-          </button>
-          <button title="parar" id="parar" onclick="pararPomodoro()" disabled>
-            <i class="fa-solid fa-stop"></i>
-          </button>
-          <button
-            title="reiniciar"
-            id="reiniciar"
-            onclick="reiniciarPomodoro()"
-            disabled
-          >
-            <i class="fa-solid fa-rotate-right"></i>
-          </button>
-        </div>
-      </section>
-    </header>
-    <main>
-      <section class="container-tarefas">
-        <h2>Lista de Tarefas</h2>
+      <span id="mensagem-pomodoro"></span>
 
-        <form id="formulario">
-          <input
-            type="text"
-            name="tarefa"
-            id="tarefa"
-            placeholder="Adicione uma tarefa"
-            maxlength="14"
-          />
-          <button type="submit" id="adicionar">+</button>
-        </form>
+    </section>
 
-        <div class="tarefas">
-          <ul id="lista"></ul>
-        </div>
-      </section>
-    </main>
+    <section class="musica animate__animated animate__repeat-1 animate__slideInDown">
+      <h3>Música</h3>
+    </section>
+  </header>
+  <main>
+    <section class="container-tarefas animate__animated animate__repeat-1 animate__slideInDown">
+      <h2>Lista de Tarefas</h2>
 
-    <script src="./assets/src/modo-claro-escuro.js"></script>
-    <script src="./assets/src/config-supabase.js"></script>
-    <script src="./assets/src/hora-atual.js"></script>
-    <script src="./assets/src/pomodoro.js"></script>
-    <script src="./assets/src/lista-de-tarefas.js"></script>
-    <script src="./assets/src/logout.js"></script>
-  </body>
+      <form id="formulario">
+        <input type="text" name="tarefa" id="tarefa" placeholder="Adicione uma tarefa" maxlength="14" />
+        <button type="submit" id="adicionar">+</button>
+      </form>
+
+      <div class="tarefas">
+        <ul id="lista"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="./assets/src/modo-claro-escuro.js"></script>
+  <script src="./assets/src/config-supabase.js"></script>
+  <script src="./assets/src/hora-atual.js"></script>
+  <script src="./assets/src/pomodoro.js"></script>
+  <script src="./assets/src/lista-de-tarefas.js"></script>
+  <script src="./assets/src/logout.js"></script>
+</body>
+
 </html>

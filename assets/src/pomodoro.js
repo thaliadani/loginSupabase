@@ -1,7 +1,14 @@
 const tempoPomodoro = 25;
+const tempoPausa = 5;
 let minutos = tempoPomodoro;
-let segundos = 0;
+let segundos = 0o0;
 let intervalo;
+
+document.getElementById('pomodoro-minutos').innerText = minutos
+document.getElementById('pomodoro-segundos').innerText = segundos
+
+const opcaoSelecionada = document.getElementById("pomodoro-pausa").value;
+const audioNotificacao = new Audio('./sound/bell.mp3');
 
 function atualizarDisplay() {
     document.getElementById('pomodoro-minutos').textContent = minutos.toString().padStart(2, '0');
@@ -15,7 +22,7 @@ function iniciarPomodoro() {
     document.getElementById('reiniciar').disabled = false;
     
     // Se não houver intervalo em andamento, cria um
-    if (!intervalo) {
+    if (opcaoSelecionada == "pomodoro" && !intervalo) {
         intervalo = setInterval(() => {
             // Quando os segundos chegarem a 0
             if (segundos === 0) {
@@ -23,7 +30,10 @@ function iniciarPomodoro() {
                     // Timer completado
                     clearInterval(intervalo);
                     intervalo = null;
-                    alert("Tempo do Pomodoro terminado!");
+                     document.getElementById('mensagem-pomodoro').innerText="Tempo do Pomodoro terminado! Comece o intervalo!"
+                     audioNotificacao.addEventListener('canplaythrough',function(){
+                        audioNotificacao.play();
+                     });
                     return;
                 } else {
                     // Decrementa os minutos e reseta os segundos
@@ -40,6 +50,7 @@ function iniciarPomodoro() {
         }, 1000); // Executa a cada 1 segundo (1000ms)
     }
 }
+
 function pararPomodoro() {
     // Habilita o botão iniciar e desabilita o parar
     document.getElementById('iniciar').disabled = false;
@@ -65,7 +76,7 @@ function reiniciarPomodoro() {
     document.getElementById('reiniciar').disabled = true;
 }
 
-// Inicializa o display quando a página carrega
+// Inicializa o display quando a página carregar
 window.onload = function() {
     atualizarDisplay();
 };

@@ -1,3 +1,8 @@
+:root {
+    --darkgray: rgba(255, 255, 255, 0.479);
+  }
+  
+
 .cabecalho{
     display: flex;
     flex-direction: column;
@@ -27,8 +32,55 @@
     width: 100%;
 }
 
+.cabecalho .pomodoro #pomodoro-pausa{
+    /* Reset Select */
+    appearance: none;
+    border: 0;
+    box-shadow: none;
+    /* Personalize */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0 1em;
+    color: #202020;
+    background-color:rgba(255, 255, 255, 0.479);
+    cursor: pointer;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  /* Remove IE arrow */
+  select::-ms-expand {
+    display: none;
+  }
+  /* Custom Select wrapper */
+  .select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    border-radius: .25em;
+    overflow: hidden;
+  }
+  /* Arrow */
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #ececec;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+  /* Transition */
+  .select:hover::after {
+    color: #12f3a8;
+  }
+
 .cabecalho .pomodoro span{
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: bold;
 }
 
@@ -41,6 +93,7 @@
 
 .cabecalho .pomodoro-botoes i{
     width: 30px;
+    cursor: pointer;
 }
 
 #formulario{

@@ -90,8 +90,13 @@ section{
     color: #202020; 
 }
 
-section #mensagem{
-    padding-top: .5rem;
+#popup-mensagem{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem .8rem;
+    font-weight: bold;
 }
 
 @keyframes gradient {
