@@ -1,18 +1,75 @@
-const tempoPomodoro = 25;
-const tempoPausa = 5;
+const tempoPomodoro = 1;
+const tempoPausa = 1;
 let minutos = tempoPomodoro;
-let segundos = 0o0;
+let segundos = 0;
 let intervalo;
+let emPausa = false;
 
-document.getElementById('pomodoro-minutos').innerText = minutos
-document.getElementById('pomodoro-segundos').innerText = segundos
+// Elementos do DOM
+const displayMinutos = document.getElementById('pomodoro-minutos');
+const displaySegundos = document.getElementById('pomodoro-segundos');
+const selectPomodoroPausa = document.getElementById('pomodoro-pausa');
+const mensagemPomodoro = document.getElementById('mensagem-pomodoro');
+const audioNotificacao = new Audio('../sound/notification.mp3');
+let audioLiberado = false;
 
-const opcaoSelecionada = document.getElementById("pomodoro-pausa").value;
-const audioNotificacao = new Audio('./sound/bell.mp3');
+function liberarAudio() {
+    audioLiberado = true;
+    // Reproduzir e pausar imediatamente para "destravar" o áudio
+    audioNotificacao.play().then(() => {
+        audioNotificacao.pause();
+        audioNotificacao.currentTime = 0;
+    }).catch(e => {
+        console.error("Pré-liberação do áudio falhou:", e);
+    });
+}
+
+// Adicionar evento de clique em algum elemento para liberar o áudio
+document.addEventListener('DOMContentLoaded', () => {
+    // Pode ser qualquer elemento - botão, div, ou até o documento todo
+    document.body.addEventListener('click', liberarAudio, { once: true });
+    
+    // Ou especificamente no botão de iniciar
+    document.getElementById('iniciar').addEventListener('click', liberarAudio, { once: true });
+});
+
+// Configuração do áudio para autoplay
+audioNotificacao.muted = false;
+audioNotificacao.preload = 'auto';
+
+// Inicializa o display
+atualizarDisplay();
+
+// Event listener para mudança no select
+selectPomodoroPausa.addEventListener('change', function() {
+    alternarModo();
+});
+
+function alternarModo() {
+    const modoSelecionado = selectPomodoroPausa.value;
+    
+    // Para o timer se estiver rodando
+    pararPomodoro();
+    
+    if (modoSelecionado === "pomodoro") {
+        minutos = tempoPomodoro;
+        emPausa = false;
+    } else {
+        minutos = tempoPausa;
+        emPausa = true;
+    }
+    
+    segundos = 0;
+    atualizarDisplay();
+    mensagemPomodoro.innerText = "";
+    
+    // Habilita o botão iniciar quando alterna o modo
+    document.getElementById('iniciar').disabled = false;
+}
 
 function atualizarDisplay() {
-    document.getElementById('pomodoro-minutos').textContent = minutos.toString().padStart(2, '0');
-    document.getElementById('pomodoro-segundos').textContent = segundos.toString().padStart(2, '0');
+    displayMinutos.textContent = minutos.toString().padStart(2, '0');
+    displaySegundos.textContent = segundos.toString().padStart(2, '0');
 }
 
 function iniciarPomodoro() {
@@ -22,7 +79,7 @@ function iniciarPomodoro() {
     document.getElementById('reiniciar').disabled = false;
     
     // Se não houver intervalo em andamento, cria um
-    if (opcaoSelecionada == "pomodoro" && !intervalo) {
+    if (!intervalo) {
         intervalo = setInterval(() => {
             // Quando os segundos chegarem a 0
             if (segundos === 0) {
@@ -30,10 +87,36 @@ function iniciarPomodoro() {
                     // Timer completado
                     clearInterval(intervalo);
                     intervalo = null;
-                     document.getElementById('mensagem-pomodoro').innerText="Tempo do Pomodoro terminado! Comece o intervalo!"
-                     audioNotificacao.addEventListener('canplaythrough',function(){
-                        audioNotificacao.play();
-                     });
+                    
+                    // Exibir mensagem imediatamente
+                    if (emPausa) {
+                        mensagemPomodoro.innerText = "Pausa terminada! Hora de trabalhar!";
+                    } else {
+                        mensagemPomodoro.innerText = "Tempo do Pomodoro terminado! Iniciando pausa...";
+                    }
+                    
+                    // Tocar o som de notificação
+                    audioNotificacao.play().catch(e => {
+                        console.error("Erro ao reproduzir som:", e);
+                        // Mostrar mensagem mesmo se o som falhar
+                        mensagemPomodoro.style.display = 'block';
+                    });
+                    
+                    // Pequeno atraso para garantir que a mensagem seja exibida
+                    setTimeout(() => {
+                        if (emPausa) {
+                            // Mudar para modo Pomodoro e iniciar automaticamente
+                            selectPomodoroPausa.value = "pomodoro";
+                            alternarModo();
+                            iniciarPomodoro();
+                        } else {
+                            // Mudar para modo Pausa e iniciar automaticamente
+                            selectPomodoroPausa.value = "pausa";
+                            alternarModo();
+                            iniciarPomodoro();
+                        }
+                    }, 1000);
+                    
                     return;
                 } else {
                     // Decrementa os minutos e reseta os segundos
@@ -47,7 +130,7 @@ function iniciarPomodoro() {
             
             // Atualiza o display
             atualizarDisplay();
-        }, 1000); // Executa a cada 1 segundo (1000ms)
+        }, 1000);
     }
 }
 
@@ -65,8 +148,15 @@ function reiniciarPomodoro() {
     // Para o timer se estiver rodando
     pararPomodoro();
     
-    // Reseta o tempo
-    minutos = tempoPomodoro;
+    // Reseta o tempo de acordo com o modo atual
+    if (selectPomodoroPausa.value === "pomodoro") {
+        minutos = tempoPomodoro;
+        emPausa = false;
+    } else {
+        minutos = tempoPausa;
+        emPausa = true;
+    }
+    
     segundos = 0;
     
     // Atualiza o display
@@ -74,9 +164,22 @@ function reiniciarPomodoro() {
     
     // Desabilita o botão reiniciar até que o timer comece novamente
     document.getElementById('reiniciar').disabled = true;
+    
+    // Limpa mensagens
+    mensagemPomodoro.innerText = "";
+    mensagemPomodoro.style.display = 'block';
+    
+    // Habilita o botão iniciar
+    document.getElementById('iniciar').disabled = false;
 }
 
 // Inicializa o display quando a página carregar
 window.onload = function() {
     atualizarDisplay();
+    
+    // Garante que o elemento de mensagem está visível
+    if (mensagemPomodoro) {
+        mensagemPomodoro.style.display = 'block';
+    }
 };
+

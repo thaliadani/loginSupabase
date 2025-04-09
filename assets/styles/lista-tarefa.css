@@ -32,6 +32,11 @@
     width: 100%;
 }
 
+#mensagem-pomodoro{
+    font-size: 1.2rem;
+    text-align: center;
+}
+
 .cabecalho .pomodoro #pomodoro-pausa{
     /* Reset Select */
     appearance: none;
@@ -95,6 +100,12 @@
     width: 30px;
     cursor: pointer;
 }
+
+.cabecalho iframe{
+    width: 100%;
+    height: 300px;
+    border-radius: .8rem;
+}	
 
 #formulario{
     display: flex;
