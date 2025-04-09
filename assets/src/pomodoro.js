@@ -1,4 +1,4 @@
-const tempoPomodoro = 1;
+const tempoPomodoro = 25;
 const tempoPausa = 5;
 let minutos = tempoPomodoro;
 let segundos = 0;
