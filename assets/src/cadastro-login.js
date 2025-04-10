@@ -1,5 +1,3 @@
-
-
 async function cadastrar() {
   const username = document.getElementById("nome").value.trim();
   const email = document.getElementById("email").value.trim();

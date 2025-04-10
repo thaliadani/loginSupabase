@@ -1,24 +1,67 @@
 // Mensagem de bem vindo
-
 const usuarioNome = localStorage.getItem("usuarioNome");
 
 if (usuarioNome) {
-  document.getElementById(
-    "mensagem"
-  ).innerText = `Boas-vindas, ${usuarioNome}!`;
+  document.getElementById("mensagem").innerText = `Boas-vindas, ${usuarioNome}!`;
 } else {
   document.getElementById("mensagem").innerText = "Usuário não autenticado!";
 }
 
 // Lista de Tarefas
-
 ("use strict");
 const formulario = document.querySelector("#formulario");
 const listaDeTarefas = document.querySelector("#lista");
 let tarefas = [];
 
+async function excluirTarefa(tarefaId, container) {
+  console.log("ID:", tarefaId, "Tipo:", typeof tarefaId);
+
+  try {
+    // Verifica autenticação
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      alert("Usuário não autenticado!");
+      return false;
+    }
+
+    // Debug: Verifica se o ID existe na tabela
+    const { data: checkData, error: checkError } = await supabase
+      .from('tarefas')
+      .select('id')
+      .eq('id', tarefaId);
+
+    console.log("Verificação pré-deleção:", checkData);
+
+    // Executa a deleção
+    const { data, error } = await supabase
+      .from("tarefas")
+      .delete()
+      .eq("id", tarefaId)
+      .select();
+
+    console.log("Resposta Supabase:", { data, error });
+
+    if (error) {
+      console.error("Erro detalhado:", error);
+      throw error;
+    }
+
+    // Atualização local apenas se a deleção remota funcionar
+    tarefas = tarefas.filter((t) => t.id !== tarefaId);
+    listaDeTarefas?.removeChild(container);
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+
+    return true;
+    
+  } catch (err) {
+    console.error("Erro completo:", err);
+    alert("Erro ao excluir do servidor. Tarefa mantida localmente.");
+    return false;
+  }
+}
+
 function renderizarTarefasNoHTML(tarefa) {
-  // Container principal que envolve toda a tarefa
   const container = document.createElement("div");
   container.className = "tarefa-container";
   container.style.display = "flex";
@@ -28,12 +71,10 @@ function renderizarTarefasNoHTML(tarefa) {
   container.style.gap = ".8rem";
   container.style.width = "100%";
 
-  // Botão de prioridade (fora da caixa colorida)
   const prioridadeBtn = document.createElement("button");
   prioridadeBtn.className = "prioridade-btn";
   prioridadeBtn.textContent = "^";
 
-  // Container da tarefa (caixa colorida)
   const tarefaBox = document.createElement("div");
   tarefaBox.className = "tarefa-box";
   tarefaBox.style.display = "flex";
@@ -45,7 +86,6 @@ function renderizarTarefasNoHTML(tarefa) {
   tarefaBox.style.width = "200px";
   tarefaBox.style.transition = "all 0.3s ease";
 
-  // Aplicar cor baseada na prioridade
   if (tarefa.prioridade == "2") {
     tarefaBox.style.backgroundColor = "#fff3bf";
     tarefaBox.style.color = "#333333";
@@ -60,7 +100,6 @@ function renderizarTarefasNoHTML(tarefa) {
     tarefaBox.style.borderLeft = ".3rem solid #ced4da";
   }
 
-  // Checkbox
   const input = document.createElement("input");
   input.setAttribute("type", "checkbox");
   input.className = "tarefa-checkbox";
@@ -104,7 +143,6 @@ function renderizarTarefasNoHTML(tarefa) {
 
   input.checked = tarefa.feito;
 
-  // Texto da tarefa
   const span = document.createElement("span");
   span.className = "tarefa-texto";
   span.textContent = tarefa.titulo;
@@ -115,42 +153,20 @@ function renderizarTarefasNoHTML(tarefa) {
     span.style.opacity = "0.7";
   }
 
-  // Botão de remover (fora da caixa colorida)
   const removerBtn = document.createElement("button");
   removerBtn.className = "remover-btn";
   removerBtn.textContent = "-";
-  removerBtn.addEventListener("click", () => {
-    tarefas = tarefas.filter((t) => t.titulo !== tarefa.titulo);
-    listaDeTarefas?.removeChild(container);
-    localStorage.setItem("tarefas", JSON.stringify(tarefas));
-  });
-
+  
   removerBtn.addEventListener("click", async () => {
-    const tarefaId = tarefa.id;
-
-    try {
-      // Remove do Supabase
-      const { error } = await supabase
-        .from("tarefas")
-        .delete()
-        .eq("id", tarefaId);
-
-      if (error) throw error;
-
-      // Remove localmente
-      tarefas = tarefas.filter((t) => t.id !== tarefaId);
-      listaDeTarefas?.removeChild(container);
-      localStorage.setItem("tarefas", JSON.stringify(tarefas));
-    } catch (err) {
-      console.error("Erro ao remover do Supabase:", err);
-      // Fallback para localStorage
-      tarefas = tarefas.filter((t) => t.id !== tarefaId);
-      listaDeTarefas?.removeChild(container);
-      localStorage.setItem("tarefas", JSON.stringify(tarefas));
+    const confirmacao = confirm("Tem certeza que deseja excluir esta tarefa?");
+    if (!confirmacao) return;
+    
+    const resultado = await excluirTarefa(tarefa.id, container);
+    if (!resultado) {
+      alert("A tarefa foi removida localmente, mas houve um erro ao remover do servidor.");
     }
   });
 
-  // Evento do botão de prioridade
   prioridadeBtn.addEventListener("click", async () => {
     const opcao =
       prompt(
@@ -159,7 +175,6 @@ function renderizarTarefasNoHTML(tarefa) {
       ) || "1";
 
     try {
-      // Atualiza no Supabase
       const { error } = await supabase
         .from("tarefas")
         .update({ prioridade: opcao })
@@ -167,7 +182,6 @@ function renderizarTarefasNoHTML(tarefa) {
 
       if (error) throw error;
 
-      // Atualiza localmente
       tarefas = tarefas.map((t) => {
         if (t.id === tarefa.id) {
           return { ...t, prioridade: opcao };
@@ -181,7 +195,6 @@ function renderizarTarefasNoHTML(tarefa) {
       tarefas.forEach((t) => renderizarTarefasNoHTML(t));
     } catch (err) {
       console.error("Erro ao atualizar prioridade no Supabase:", err);
-      // Fallback para localStorage
       tarefas = tarefas.map((t) => {
         if (t.id === tarefa.id) {
           return { ...t, prioridade: opcao };
@@ -196,7 +209,6 @@ function renderizarTarefasNoHTML(tarefa) {
     }
   });
 
-  // Montagem da estrutura
   container.appendChild(prioridadeBtn);
   tarefaBox.appendChild(input);
   tarefaBox.appendChild(span);
@@ -228,11 +240,7 @@ window.onload = async () => {
   const tarefasStorage = localStorage.getItem("tarefas");
   if (tarefasStorage) {
     tarefas = JSON.parse(tarefasStorage);
-
-    // Ordena do maior (3) para o menor (1) ao carregar
     tarefas.sort((a, b) => b.prioridade - a.prioridade);
-
-    // Renderiza na ordem correta
     listaDeTarefas.innerHTML = "";
     tarefas.forEach((t) => renderizarTarefasNoHTML(t));
   }
@@ -251,7 +259,7 @@ formulario?.addEventListener("submit", async (evento) => {
   const novaTarefa = {
     titulo: tituloDaTarefa,
     feito: false,
-    prioridade: "1", // Prioridade padrão
+    prioridade: "1",
   };
 
   try {

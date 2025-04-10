@@ -38,45 +38,44 @@
         </button>
       </div>
 
-        <section
-          class="pomodoro animate__animated animate__repeat-1 animate__slideInDown"
-        >
-          <div class="select">
-            <select
-              title="pomodoro e pausa"
-              name="pomodoro-pausa"
-              id="pomodoro-pausa"
-            >
-              <option value="pomodoro">Pomodoro</option>
-              <option value="pausa">Pausa</option>
-            </select>
-          </div>
+      <section
+        class="pomodoro animate__animated animate__repeat-1 animate__slideInDown"
+      >
+        <div class="select">
+          <select
+            title="pomodoro e pausa"
+            name="pomodoro-pausa"
+            id="pomodoro-pausa"
+          >
+            <option value="pomodoro">Pomodoro</option>
+            <option value="pausa">Pausa</option>
+          </select>
+        </div>
 
-          <div class="pomodoro-tempo">
-            <span id="pomodoro-minutos"></span>
-            <span>:</span>
-            <span id="pomodoro-segundos"></span>
-          </div>
-          <div class="pomodoro-botoes">
-            <button title="iniciar" id="iniciar" onclick="iniciarPomodoro()">
-              <i class="fa-solid fa-play"></i>
-            </button>
-            <button title="parar" id="parar" onclick="pararPomodoro()" disabled>
-              <i class="fa-solid fa-stop"></i>
-            </button>
-            <button
-              title="reiniciar"
-              id="reiniciar"
-              onclick="reiniciarPomodoro()"
-              disabled
-            >
-              <i class="fa-solid fa-rotate-right"></i>
-            </button>
-          </div>
+        <div class="pomodoro-tempo">
+          <span id="pomodoro-minutos"></span>
+          <span>:</span>
+          <span id="pomodoro-segundos"></span>
+        </div>
+        <div class="pomodoro-botoes">
+          <button title="iniciar" id="iniciar" onclick="iniciarPomodoro()">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <button title="parar" id="parar" onclick="pararPomodoro()" disabled>
+            <i class="fa-solid fa-stop"></i>
+          </button>
+          <button
+            title="reiniciar"
+            id="reiniciar"
+            onclick="reiniciarPomodoro()"
+            disabled
+          >
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
 
-          <span id="mensagem-pomodoro"></span>
-        </section>
-      
+        <span id="mensagem-pomodoro"></span>
+      </section>
     </header>
     <main>
       <section
@@ -100,9 +99,8 @@
         </div>
       </section>
     </main>
-
-    <script src="./assets/src/modo-claro-escuro.js"></script>
     <script src="./assets/src/config-supabase.js"></script>
+    <script src="./assets/src/modo-claro-escuro.js"></script>
     <script src="./assets/src/hora-atual.js"></script>
     <script src="./assets/src/pomodoro.js"></script>
     <script src="./assets/src/lista-de-tarefas.js"></script>
