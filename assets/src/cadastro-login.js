@@ -55,7 +55,6 @@ async function login() {
   const username = document.getElementById("nome").value.trim();
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
-  const mensagem = document.getElementById("mensagem");
 
    document.getElementById("popup-mensagem").style.display ="flex"
 
@@ -65,26 +64,7 @@ async function login() {
   }
 
   try {
-    // Verifica se o usuário já existe
-    const { data: existingUser, error: checkError } = await supabase
-      .from("usuarios")
-      .select("username, email")
-      .or(`username.eq.${username},email.eq.${email}`)
-      .maybeSingle();
-
-    if (checkError) throw checkError;
-
-    if (existingUser) {
-      if (existingUser.username === username && existingUser.email === email) {
-        throw new Error("Digitou nome de usuário e email errado");
-      } else if (existingUser.username === username) {
-        throw new Error("Digitou nome de usuário errado");
-      } else {
-        throw new Error("Digitou email errado");
-      }
-    }
-
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password: senha,
       options: {
@@ -104,6 +84,7 @@ async function login() {
 
     mensagem.innerText =
       "Login realizado com sucesso!";
+    localStorage.setItem("usuarioNome", username);
 
     setTimeout(() => {
       window.location.href = "lista-tarefa.html";
