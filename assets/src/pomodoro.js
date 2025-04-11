@@ -10,7 +10,7 @@ const displayMinutos = document.getElementById('pomodoro-minutos');
 const displaySegundos = document.getElementById('pomodoro-segundos');
 const selectPomodoroPausa = document.getElementById('pomodoro-pausa');
 const mensagemPomodoro = document.getElementById('mensagem-pomodoro');
-const audioNotificacao = new Audio('../sound/notification.mp3');
+const audioNotificacao = new Audio('assets/sound/notification.mp3');
 let audioLiberado = false;
 
 function liberarAudio() {
